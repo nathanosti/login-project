@@ -4,7 +4,6 @@ import { IRegisterFormInput } from "@/components/RegisterForm";
 import registerNewUser from "@/services/auth/register";
 import loginService from "@/services/auth/login";
 import { TYPES } from "@/Providers/store";
-import { parseJwt } from "@/utils/parseJwt";
 
 export function useActions() {
   const { user, dispatch } = useStore();

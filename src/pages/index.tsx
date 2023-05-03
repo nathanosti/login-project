@@ -35,4 +35,8 @@ const HomeWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  h1 {
+    color: ${({ theme }) => theme.colors.text.tertiary};
+  }
 `;

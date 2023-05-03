@@ -34,13 +34,23 @@ export default function RegisterForm() {
           required: { value: true, message: "Obrigatorio" },
         })}
       />
+      {errors.name && <p>{`${errors.name?.message}`}</p>}
       <input
         type="text"
         placeholder="E-mail"
         {...register("email", {
-          required: { value: true, message: "Obrigatorio" },
+          required: { value: true, message: "E-Mail é obrigatórios" },
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+            message: "Adicione um e-mail válido",
+          },
+          maxLength: {
+            value: 64,
+            message: "Campo e-mail só pode ter no máximo 64 caracteres",
+          },
         })}
       />
+      {errors.email && <p>{`${errors.email?.message}`}</p>}
       <input
         type="password"
         placeholder="Senha"
@@ -48,6 +58,7 @@ export default function RegisterForm() {
           required: { value: true, message: "Obrigatorio" },
         })}
       />
+      {errors.password && <p>{`${errors.password?.message}`}</p>}
       <button type="submit">Registrar</button>
     </Form>
   );
