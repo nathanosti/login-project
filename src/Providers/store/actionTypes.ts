@@ -1,3 +1,3 @@
 export const TYPES = {
-  AUTH_USER: 'AUTH_USER',
+  UPDATE_AUTH_USER: 'UPDATE_AUTH_USER',
 };

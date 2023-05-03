@@ -1,27 +1,38 @@
 import { useStore } from "@/hooks";
+import withSession, {
+  GetServerSidePropsWithSession,
+} from "@/services/auth/withSession";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+
+import styled from "styled-components";
 
 export default function Home() {
   const { user } = useStore();
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    }
-  }, []);
 
   return (
     <>
       <Head>
         <title>Home</title>
       </Head>
-      <main>
-        <h1>{user ? `Bem vindo, ${user?.name}` : "clique aqui para logar"}</h1>
-      </main>
+      <HomeWrapper>
+        <h1>Bem vindo, {user?.email}</h1>
+      </HomeWrapper>
     </>
   );
 }
+
+export const getServerSideProps: GetServerSidePropsWithSession | any =
+  withSession(async (ctx) => {
+    return {
+      props: {},
+    };
+  });
+
+const HomeWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;

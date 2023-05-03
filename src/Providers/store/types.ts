@@ -5,13 +5,15 @@ export interface IContextProviderProps {
 }
 
 export interface User {
-  _id: string
-  name: string;
-  email: string
-};
+  _id?: string;
+  name?: string;
+  email: string;
+  accessToken?: string;
+  refreshToken?: string;
+}
 
 export interface IInitalState {
-  user: User | null
+  user: User | null;
 }
 
 export interface IAction {

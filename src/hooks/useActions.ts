@@ -1,19 +1,22 @@
 import { useStore } from "./";
-import { TYPES } from "../Providers/store";
 import { IFormInput } from "@/components/LoginForm";
 import { IRegisterFormInput } from "@/components/RegisterForm";
 import registerNewUser from "@/services/auth/register";
+import loginService from "@/services/auth/login";
+import { TYPES } from "@/Providers/store";
+import { parseJwt } from "@/utils/parseJwt";
 
 export function useActions() {
-  const { dispatch, user } = useStore();
+  const { user, dispatch } = useStore();
 
-  function login(userCredentials: IFormInput) {
-    dispatch({ type: TYPES.AUTH_USER, payload: userCredentials });
+  async function login(userCredentials: IFormInput) {
+    const authUser = await loginService(userCredentials);
+
+    dispatch({ type: TYPES.UPDATE_AUTH_USER, payload: authUser });
   }
 
   async function register(newUserCredentials: IRegisterFormInput) {
-    const user = await registerNewUser(newUserCredentials);
-    console.log({ user });
+    await registerNewUser(newUserCredentials);
   }
 
   return {

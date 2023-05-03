@@ -1,8 +1,6 @@
 import { IInitalState, IAction } from "./types";
 
 import { TYPES } from "./actionTypes";
-import registerNewUser from "@/services/auth/register";
-import loginService from "@/services/auth/login";
 
 export const initialState: IInitalState = {
   user: null,
@@ -10,17 +8,16 @@ export const initialState: IInitalState = {
 
 export function reducer(state: IInitalState, action: IAction) {
   switch (action.type) {
-    case TYPES.AUTH_USER:
-      loginService(action.payload).then(res => {
-        return {
-          ...state,
-          user: {
-            _id: res._id,
-            name: res.name
-          }
-        }
-      })
-      return { ...state };
+    case TYPES.UPDATE_AUTH_USER:
+      return {
+        ...state,
+        user: {
+          email: action.payload.email,
+          name: action.payload.name,
+          accessToken: action.payload.accessToken,
+          refreshToken: action.payload.refreshToken,
+        },
+      };
     default:
       return state;
   }

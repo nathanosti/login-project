@@ -1,12 +1,13 @@
-import { User } from "@/Providers/store/types";
+import { parseJwt } from "@/utils/parseJwt";
 import type {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from "next/types";
+import { parseCookies, destroyCookie } from "nookies";
 
 interface GetServerSidePropsContextWithSession
   extends GetServerSidePropsContext {
-  session?: User | null;
+  session?: { accessToken: string; refreshToken: string } | null;
 }
 
 export type GetServerSidePropsWithSession<
@@ -17,14 +18,33 @@ export type GetServerSidePropsWithSession<
 
 export default function withSession(gssp: GetServerSidePropsWithSession) {
   return async (ctx: GetServerSidePropsContext) => {
-    const session = null
-    
+    const { tokens } = parseCookies(ctx);
+    if (!tokens) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/login",
+        },
+      };
+    }
+
+    const session: { accessToken: string; refreshToken: string } = JSON.parse(
+      tokens || ""
+    );
+
+    const parsedAccessToken = parseJwt(session.accessToken);
+    console.log(parsedAccessToken);
+
+    const tokenIsValid = parsedAccessToken.exp < Date.now();
+
     try {
-      if (!session) {
+      if (tokenIsValid) {
         const ctxWithSession = { ...ctx, session };
 
         return await gssp(ctxWithSession);
       }
+
+      destroyCookie(ctx, "tokens");
 
       return {
         redirect: {

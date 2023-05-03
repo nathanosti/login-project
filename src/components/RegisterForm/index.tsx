@@ -1,6 +1,7 @@
-import { useActions, useStore } from "@/hooks";
 import { useRouter } from "next/router";
+import { useActions } from "@/hooks";
 import { useForm } from "react-hook-form";
+import { Form } from "./styles";
 
 export interface IRegisterFormInput {
   name: string;
@@ -19,12 +20,13 @@ export default function RegisterForm() {
   } = useForm<IRegisterFormInput>();
 
   const onSubmit = async (data: IRegisterFormInput) => {
+    console.log("entrei aqui");
     await registerUser(data);
     router.push("/login");
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <input
         type="text"
         placeholder="Nome"
@@ -47,6 +49,6 @@ export default function RegisterForm() {
         })}
       />
       <button type="submit">Registrar</button>
-    </form>
+    </Form>
   );
 }

@@ -1,5 +1,7 @@
 import { useActions } from "@/hooks";
 import { useForm } from "react-hook-form";
+import { LoginFormWrapper } from "./styles";
+import Link from "next/link";
 
 export interface IFormInput {
   email: string;
@@ -18,9 +20,10 @@ export default function LoginForm() {
   const onSubmit = (data: IFormInput) => {
     login(data);
   };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <LoginFormWrapper onSubmit={handleSubmit(onSubmit)}>
+      <h1>Login</h1>
+
       <input
         type="text"
         placeholder="email"
@@ -36,6 +39,10 @@ export default function LoginForm() {
         })}
       />
       <button type="submit">logar</button>
-    </form>
+
+      <p>
+        Não tem conta? <Link href="/register">Crie uma!</Link>
+      </p>
+    </LoginFormWrapper>
   );
 }
